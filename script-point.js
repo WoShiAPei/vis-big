@@ -20,6 +20,28 @@
         }
     }
 
+    function calcPoint(d,id){
+        var know = "number";
+        if(d.length>=2){
+            var k = d[id];
+            console.log(d,k);
+            if(typeof(k) == know){
+                var now = [k,1];
+                return now;
+            }
+            console.log(d);
+        }
+        var ans = 0,cnt = 0;
+        var len = d.length;
+        for(var i = 0;i<len;i++){
+            var temp = calcPoint(d[i],id);
+            ans+=temp[0];
+            cnt+=temp[1];
+        }
+        var now = [ans,cnt];
+        return now;
+    }
+
     function init(){
         var tooltip = d3.select("body")
             .append("div")
@@ -105,6 +127,10 @@
 
         var texts = g.attr("id","texts");
 
+        var node = g.attr("id","circles");
+
+        var fill = d3.scale.category20();
+
 
 
         //Add all of the countries to the globe
@@ -120,20 +146,36 @@
             console.log(z);
             console.log(projection(z));
 
-            texts.selectAll("text")
-                 .data(collection.features)
-                .enter()
-                .append("svg:text")
-                .text(function (d){return d.properties.name})
-                .attr("x", function(d){
-                    return projection(d.geometry.coordinates[0][0])[0];
+            // texts.selectAll("text")
+            //      .data(collection.features)
+            //     .enter()
+            //     .append("svg:text")
+            //     .text(function (d){return d.properties.name})
+            //     .attr("x", function(d){
+            //         return projection(d.geometry.coordinates[0][0])[0];
+            //     })
+            //     .attr("y", function(d){
+            //         return projection(d.geometry.coordinates[0][0])[1];
+            //     })
+            //     .attr("fill","#000000")
+            //     .attr("opacity",0.0)
+            //     .attr("font-size","9px");
+
+
+            node.selectAll("circle")
+               .data(collection.features)
+               .enter()
+                .append("svg:circle")
+                .attr("r", 0)
+                .attr("stroke-width",3)
+                .style("fill","black")
+                .style("stroke", "red")
+                .attr("cx", function(d){
+                    return projection(calcPoint(d.geometry.coordinates,0))[0];
                 })
-                .attr("y", function(d){
-                    return projection(d.geometry.coordinates[0][0])[1];
-                })
-                .attr("fill","#000000")
-                .attr("opacity",0.0)
-                .attr("font-size","9px");
+                .attr("cy", function(d){
+                    return projection(calcPoint(d.geometry.coordinates,1))[1];
+                });
 
         });
 
@@ -159,27 +201,7 @@
 
         }
 
-        function calcPoint(d,id){
-            var know = "number";
-            if(d.length>=2){
-                var k = d[id];
-                console.log(d,k);
-                if(typeof(k) == know){
-                    var now = [k,1];
-                    return now;
-                }
-                console.log(d);
-            }
-            var ans = 0,cnt = 0;
-            var len = d.length;
-            for(var i = 0;i<len;i++){
-                var temp = calcPoint(d[i],id);
-                ans+=temp[0];
-                cnt+=temp[1];
-            }
-            var now = [ans,cnt];
-            return now;
-        }
+      
 
         function click(d){
             d3.select(this).attr("class", "feature");

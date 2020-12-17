@@ -49,6 +49,12 @@ body {
     border-radius: 15px;
 }
 
+.point {
+    fill: none;
+  stroke: #ff0000;
+  stroke-width: 3px;
+}
+
 
 
 .globe {
