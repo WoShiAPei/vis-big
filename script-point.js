@@ -24,12 +24,10 @@
         var know = "number";
         if(d.length>=2){
             var k = d[id];
-            console.log(d,k);
             if(typeof(k) == know){
                 var now = [k,1];
                 return now;
             }
-            console.log(d);
         }
         var ans = 0,cnt = 0;
         var len = d.length;
@@ -130,6 +128,8 @@
         var node = g.attr("id","circles");
 
         var fill = d3.scale.category20();
+        var global = 0;
+        var arrStore = new Array();
 
 
 
@@ -141,25 +141,18 @@
                 .on("mouseover",click)
                 .on("mouseout",click1)
                 .attr("d", function(d){return path(circle.clip(d)); });
-            console.log(collection.features[0].geometry.coordinates[0][0]);
+            console.log(collection.features[2].geometry.coordinates[0][0]);
             var z = features[0][0].__data__.geometry.coordinates[0][0];
             console.log(z);
             console.log(projection(z));
+            for(var num = 0;num<=209;num++){
+                var meVal = collection.features[num].geometry.coordinates
+                var tempx = calcPoint(meVal,0),tempy = calcPoint(meVal,1);
+                var x = tempx[0]/tempx[1],y = tempy[0]/tempy[1];
+                var now = [x,y];
+                arrStore[num] = now;
 
-            // texts.selectAll("text")
-            //      .data(collection.features)
-            //     .enter()
-            //     .append("svg:text")
-            //     .text(function (d){return d.properties.name})
-            //     .attr("x", function(d){
-            //         return projection(d.geometry.coordinates[0][0])[0];
-            //     })
-            //     .attr("y", function(d){
-            //         return projection(d.geometry.coordinates[0][0])[1];
-            //     })
-            //     .attr("fill","#000000")
-            //     .attr("opacity",0.0)
-            //     .attr("font-size","9px");
+            }
 
 
             node.selectAll("circle")
@@ -171,11 +164,15 @@
                 .style("fill","black")
                 .style("stroke", "red")
                 .attr("cx", function(d){
-                    return projection(calcPoint(d.geometry.coordinates,0))[0];
+                    return projection(d.geometry.coordinates[0][0])[0];
                 })
                 .attr("cy", function(d){
-                    return projection(calcPoint(d.geometry.coordinates,1))[1];
+                    return projection(d.geometry.coordinates[0][0])[1];
                 });
+
+            console.log(node);
+
+
 
         });
 
@@ -188,9 +185,8 @@
 
         //Redraw all items with new projections
         function redraw(){
-           
-
             features.attr("d", function(d){
+
                 return path(circle.clip(d));
             });
 
@@ -198,6 +194,21 @@
                 spacePath.pointRadius(d.properties.radius);
                 return spacePath(d);
             });
+
+
+            for(var num = 210;num<=419;num++){
+                //console.log(node[0][0].children[num+211]);
+                var jd = node[0][0].children[num-210].getAttributeNode("d");
+                var circlenode = node[0][0].children[num];
+                circlenode.getAttributeNode("r").value = 0;
+                if(jd != null){
+                    var now = arrStore[num-210];
+                    var index = Math.min(184,num-210);
+                    circlenode.getAttributeNode("cx").value = projection(now)[0];
+                    circlenode.getAttributeNode("cy").value = projection(now)[1];
+                    circlenode.getAttributeNode("r").value = tempStore[index].confirm/1000000;
+                }
+            }
 
         }
 

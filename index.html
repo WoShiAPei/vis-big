@@ -3,6 +3,21 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .axis path,
+        .axis line{
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+
 </head>
 <body>
     <svg id="defs">
@@ -15,8 +30,8 @@
                 <feColorMatrix type="matrix"
                     values=
                     "0 0 0 0   0
-                     0 0 0 0.9 0 
-                     0 0 0 0.9 0 
+                     0 0 0 0.9 0
+                     0 0 0 0.9 0
                      0 0 0 1   0"/>
                 <feGaussianBlur stdDeviation="5.5" result="coloredBlur"/>
                 <feMerge>
@@ -26,8 +41,79 @@
             </filter>
         </defs>
     </svg>
+
+    <script type="text/javascript">
+        var flag = 0;
+        function loadScript(url,callback){
+
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = url;
+            if (script.readyState){//IE
+                script.onreadystatechange = function(){
+                    if (script.readyState ==  "loaded" || script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        eval(callback + '()');
+                    }
+                };
+            } else { //Others: Firefox, Safari, Chrome, and Opera
+                script.onload = function(){
+                    eval(callback + '()');
+                };
+            }
+            document.body.appendChild(script);
+
+            document.body.removeChild(script);
+            console.log(document.body.childNodes);
+            flag = 1;
+        }
+
+        function dropScript(url,callback){
+            if(flag === 1){
+                location.reload();
+                console.log("test1")
+            }
+
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = url;
+            if (script.readyState){//IE
+                script.onreadystatechange = function(){
+                    if (script.readyState ==  "loaded" || script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        eval(callback + '()');
+                    }
+                };
+            } else { //Others: Firefox, Safari, Chrome, and Opera
+                script.onload = function(){
+                    eval(callback + '()');
+                };
+            }
+
+        }
+    </script>
+    <button type="button" onclick="javascript:dropScript('script-still.js');javascript:loadScript('script.js');">旋转</button>
+    <button type="button" onclick="javascript:dropScript('script.js');javascript:loadScript('script-still.js');">手动</button>
+
+
+<!--    <script src="d3//d3.min.js"> </script>-->
+<!--    <script src="d3-geo/dist/d3-geo.js"></script>-->
+<!--    <script src="d3-array/dist/d3-array.min.js"></script>-->
+
     <script src="http://marcneuwirth.com/experiments/globe/d3.custom.js"></script>
 
-    <script src="script-point.js"></script>
+
+<!--    <script src="test.js" charset="utf-8"></script>-->
+<!--    <script type="text/javascript">-->
+<!--        load_country_data();-->
+<!--        var a, sid;-->
+<!--        setTimeout(function() { sid = create_line_chart(["USA", "CHN", "GBR", "RUS"], "20200201", "20201201", "confirmedIncr")[1];}, 2000);-->
+<!--        setTimeout(function() { remove_svg(sid);}, 4000);-->
+<!--    </script>-->
+
+
+
+
+
 </body>
 </html>

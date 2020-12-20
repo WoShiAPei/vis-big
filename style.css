@@ -38,15 +38,31 @@ body {
 
 .tooltip{
     position: absolute;
-    width: 120;
     height: auto;
     font-family: simsun;
     font-size: 14px;
+    color: white;
     text-align: center;
-    border-style: solid;
     border-width: 10px;
-    background-color: white;
+    background-color: black;
     border-radius: 15px;
+}
+
+
+.tooltip1{
+    position: absolute;
+    height: auto;
+    font-size: 25px;
+    color: red;
+}
+
+.timeShow{
+    position: absolute;
+    width: 120;
+    height: 30;
+    font-family: simsun;
+    font-size: 14px;
+    text-align: center;
 }
 
 .point {
